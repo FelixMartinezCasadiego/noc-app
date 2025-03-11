@@ -17,16 +17,17 @@ const fileSystemLogRepository = new LogRepositoryImpl(
 export class Server {
   public static start() {
     console.log("Server started...");
-    const url = "https://google.com";
 
-    CronService.createJob("*/5 * * * * *", () => {
-      new CheckService(
-        fileSystemLogRepository,
-        () => console.log(`${url} is ok`),
-        (error) => console.log(error)
-      ).execute(url);
+    // const url = "https://google.com";
 
-      // new CheckService().execute("http://localhost:3000")
-    });
+    // CronService.createJob("*/5 * * * * *", () => {
+    //   new CheckService(
+    //     fileSystemLogRepository,
+    //     () => console.log(`${url} is ok`),
+    //     (error) => console.log(error)
+    //   ).execute(url);
+
+    //   // new CheckService().execute("http://localhost:3000")
+    // });
   }
 }

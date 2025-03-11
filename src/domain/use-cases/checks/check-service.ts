@@ -1,5 +1,9 @@
 /* Entities */
-import { LogEntity, LogSeverityLevel } from "../../entities/log.entity";
+import {
+  LogEntity,
+  LogEntityOptions,
+  LogSeverityLevel,
+} from "../../entities/log.entity";
 
 /* Repository */
 import { LogRepository } from "../../repository/log.repository";
@@ -32,17 +36,29 @@ export class CheckService implements CheckServiceUseCase {
 
       if (!req.ok) throw new Error(`Error on check service ${url}`);
 
-      const log = new LogEntity(
-        `Service ${url}, working`,
-        LogSeverityLevel.LOW
-      );
+      const logOptions: LogEntityOptions = {
+        message: `Service ${url}, working`,
+        level: LogSeverityLevel.LOW,
+        origin: "check-service.ts",
+        createdAt: new Date(),
+      };
+
+      const log = new LogEntity(logOptions);
       this.logRepository.saveLog(log);
 
       this.successCallback && this.successCallback();
       return true;
     } catch (error) {
       const errorMessage = `${url} is not ok. ${error}`;
-      const log = new LogEntity(errorMessage, LogSeverityLevel.HIGH);
+
+      const logOptionsCatch: LogEntityOptions = {
+        message: errorMessage,
+        level: LogSeverityLevel.HIGH,
+        origin: "check-service.ts",
+        createdAt: new Date(),
+      };
+
+      const log = new LogEntity(logOptionsCatch);
       this.logRepository.saveLog(log);
 
       this.errorCallback && this.errorCallback(`${errorMessage}`);

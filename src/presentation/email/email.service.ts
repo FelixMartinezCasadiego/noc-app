@@ -24,7 +24,7 @@ export class EmailService {
     auth: { user: envs.MAILER_EMAIL, pass: envs.MAILER_SECRET_KEY },
   });
 
-  constructor(private readonly logRepository: LogRepository) {}
+  constructor() {}
 
   async sendEmail(options: SendMailOptions): Promise<boolean> {
     const { htmlBody, subject, to, attachements = [] } = options;
@@ -36,29 +36,16 @@ export class EmailService {
         html: htmlBody,
         attachments: attachements,
       });
-      console.log(sendInformation);
 
-      const log = new LogEntity({
-        level: LogSeverityLevel.LOW,
-        message: "Email sent",
-        origin: "email.service.ts",
-      });
-      this.logRepository.saveLog(log);
+      console.log(sendInformation);
 
       return true;
     } catch (error) {
-      const log = new LogEntity({
-        level: LogSeverityLevel.HIGH,
-        message: "Email not sent",
-        origin: "email.service.ts",
-      });
-      this.logRepository.saveLog(log);
-
       return false;
     }
   }
 
-  sendEmailWithFileSystemLogs(to: string | string[]) {
+  async sendEmailWithFileSystemLogs(to: string | string[]) {
     const subject = "Service logs";
     const htmlBody = `<h3>System logs - NOC </h3>`;
 
@@ -68,6 +55,6 @@ export class EmailService {
       { filename: "ligs-medium.log", path: "./logs/logs-medium.log" },
     ];
 
-    this.sendEmail({ to, subject, attachements, htmlBody });
+    return this.sendEmail({ to, subject, attachements, htmlBody });
   }
 }

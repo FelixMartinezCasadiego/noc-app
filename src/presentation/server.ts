@@ -1,6 +1,6 @@
 /* Use cases - checks */
 import { envs } from "../configs/plugins/envs.plugin";
-import { CheckService } from "../domain/use-cases/checks/check-service";
+import { SendEmailLogs } from "../domain/use-cases/email/send-email-logs";
 
 /* Infrastructure - datasources */
 import { FileSystemDatasource } from "../infrastructure/datasources/file-system.datasource";
@@ -8,7 +8,6 @@ import { FileSystemDatasource } from "../infrastructure/datasources/file-system.
 import { LogRepositoryImpl } from "../infrastructure/repositories/log.repository.impl";
 
 /* Presentations */
-import { CronService } from "./cron/cron-service";
 import { EmailService } from "./email/email.service";
 
 // Variable to change the repositories
@@ -16,13 +15,18 @@ const fileSystemLogRepository = new LogRepositoryImpl(
   new FileSystemDatasource()
 );
 
+const emailService = new EmailService();
+
 export class Server {
   public static start() {
     console.log("Server started...");
 
     // Send email
-    const emailService = new EmailService(fileSystemLogRepository);
-    emailService.sendEmailWithFileSystemLogs([envs.MAILER_EMAIL]);
+    new SendEmailLogs(emailService, fileSystemLogRepository).execute([
+      envs.MAILER_EMAIL,
+    ]);
+
+    // emailService.sendEmailWithFileSystemLogs([envs.MAILER_EMAIL]);
     // emailService.sendEmail({
     //   to: envs.MAILER_EMAIL,
     //   subject: "System logs",

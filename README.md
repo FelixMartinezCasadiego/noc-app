@@ -12,11 +12,3 @@ The objective is to create a series of tasks using Clean Architecture with TypeS
    docker compose up -d
    ```
 5. Run `npm run dev`
-
-```
-PORT
-
-MAILER_EMAIL
-MAILER_SECRET_KEY
-
-```

@@ -1,3 +1,5 @@
+import { PrismaClient } from "@prisma/client";
+
 /* Presentation */
 import { Server } from "./presentation/server";
 
@@ -18,6 +20,13 @@ async function main() {
     mongoUrl: envs.MONGO_URL,
   });
 
+  const prisma = new PrismaClient();
+  const newLog = await prisma.logModel.create({
+    data: { level: "HIGH", message: "Test message", origin: "App.ts" },
+  });
+
+  console.log(newLog);
+
   // Create a collection = tables, document = register
   /* const newLog = await LogModel.create({
     message: "Test message from Mongo",
@@ -30,5 +39,5 @@ async function main() {
 
   // const logs = await LogModel.find();
   // console.log(logs);
-  Server.start();
+  // Server.start();
 }

@@ -7,17 +7,20 @@ import { SendEmailLogs } from "../domain/use-cases/email/send-email-logs";
 
 /* Infrastructure - datasources */
 import { FileSystemDatasource } from "../infrastructure/datasources/file-system.datasource";
+import { PostgresLogDatasource } from "../infrastructure/datasources/postgres-log.datasource";
+import { MongoLogDatasource } from "../infrastructure/datasources/mongo-log.datasource";
+
 /* Infrastructure - repositories */
 import { LogRepositoryImpl } from "../infrastructure/repositories/log.repository.impl";
-import { MongoLogDatasource } from "../infrastructure/datasources/mongo-log.datasource";
 
 /* Presentations */
 import { EmailService } from "./email/email.service";
 
 // Variable to change the repositories
 const LogRepository = new LogRepositoryImpl(
-  new FileSystemDatasource()
+  // new FileSystemDatasource()
   // new MongoLogDatasource()
+  new PostgresLogDatasource()
 );
 
 // const emailService = new EmailService();
@@ -38,16 +41,16 @@ export class Server {
     //   htmlBody: `<h3>System logs - NOC </h3>`,
     // });
 
-    // const url = "https://google.com";
+    const url = "https://google.com";
 
-    // CronService.createJob("*/5 * * * * *", () => {
-    //   new CheckService(
-    //     LogRepository,
-    //     () => console.log(`${url} is ok`),
-    //     (error) => console.log(error)
-    //   ).execute(url);
+    CronService.createJob("*/5 * * * * *", () => {
+      new CheckService(
+        LogRepository,
+        () => console.log(`${url} is ok`),
+        (error) => console.log(error)
+      ).execute(url);
 
-    //   // new CheckService().execute("http://localhost:3000")
-    // });
+      // new CheckService().execute("http://localhost:3000")
+    });
   }
 }

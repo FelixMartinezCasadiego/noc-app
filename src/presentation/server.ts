@@ -15,11 +15,16 @@ import { LogRepositoryImpl } from "../infrastructure/repositories/log.repository
 
 /* Presentations */
 import { EmailService } from "./email/email.service";
+import { CheckServiceMultiple } from "../domain/use-cases/checks/check-service-multiple";
 
 // Variable to change the repositories
-const LogRepository = new LogRepositoryImpl(
-  // new FileSystemDatasource()
+const fsLogRepository = new LogRepositoryImpl(
+  new FileSystemDatasource()
   // new MongoLogDatasource()
+  // new PostgresLogDatasource()
+);
+const mongoLogRepository = new LogRepositoryImpl(new MongoLogDatasource());
+const postgresLogRepository = new LogRepositoryImpl(
   new PostgresLogDatasource()
 );
 
@@ -44,8 +49,9 @@ export class Server {
     const url = "https://google.com";
 
     CronService.createJob("*/5 * * * * *", () => {
-      new CheckService(
-        LogRepository,
+      // new CheckService(
+      new CheckServiceMultiple(
+        [fsLogRepository, mongoLogRepository, postgresLogRepository],
         () => console.log(`${url} is ok`),
         (error) => console.log(error)
       ).execute(url);

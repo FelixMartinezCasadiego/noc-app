@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .env
+.env.test
 
 # Logs
 .DS_Store
@@ -9,5 +10,7 @@ logs/
 .qodo
 
 mongo/
+mongo-test/
 postgres/
 postgres/base/
+postgres-test/

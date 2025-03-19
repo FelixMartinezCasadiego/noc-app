@@ -1,4 +1,4 @@
-import { envs } from "../../../../src/configs/plugins/envs.plugin";
+import { envs } from "../../../../configs/plugins/envs.plugin";
 
 describe("EnvsPlugin", () => {
   test("should return env options", () => {
@@ -19,7 +19,7 @@ describe("EnvsPlugin", () => {
     process.env.PORT = "ABC";
 
     try {
-      await import("../../../../src/configs/plugins/envs.plugin");
+      await import("../../../../configs/plugins/envs.plugin");
 
       expect(true).toBe(false);
     } catch (error) {

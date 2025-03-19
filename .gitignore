@@ -8,6 +8,7 @@ dist/
 
 logs/
 .qodo
+coverage/
 
 mongo/
 mongo-test/

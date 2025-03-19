@@ -7,7 +7,7 @@ describe("EnvsPlugin", () => {
       MAILER_EMAIL: "felix.martinezcasadiego@gmail.com",
       MAILER_SECRET_KEY: "zosvhgdxmtknzvyd",
       MAILER_SERVICE: "gmail",
-      MONGO_URL: "mongodb://felix:123456@localhost:27017/",
+      MONGO_URL: "mongodb://felix:123456789@localhost:27017/",
       MONGO_DB_NAME: "NOC-TEST",
       MONGO_USER: "felix",
       MONGO_PASS: "123456789",
